@@ -1,0 +1,32 @@
+
+In the following we will always consider an SDE of the form
+\begin{align}
+\dd X_t = a(X_t)\dd t + b(X_t) \dd W_t, \quad t\in[0,T]
+\end{align}
+Corresponding Euler approximation:
+\begin{align}
+Y_{\tau_{n+1}}&= Y_{\tau_{n}}+a(Y_{\tau_{n}})(\tau_{n+1}-\tau_{n})+b(Y_{\tau_{n}})(W_{\tau_{n+1}}-W_{\tau_{n}})\\
+\text{with}\qquad0 &= \tau_{0}<\tau_{1}<...<\tau_{n}<...<\tau_{N} = T
+\end{align}
+Lipschitz condition: $\exists K>0$ such that $\forall x,y \in \R$: 
+\begin{align}
+|a(x)-a(y)|+|b(x)-b(y)|\leq |x-y|\label{eq:Lip_cond}
+\end{align}
+Numerical stability: Let $Y$ be a discrete time approximation with $Y_0$ at time $t_0$ and $\delta$ the maximum time step. Let $\bar{Y}$ be an approximation corresponding to the same time discretisation but starting at a different value $\bar{Y}_0$ at time $t_0$. Then $Y$ is numerically stable If for any finite  time interval $[t_0,T]$ there exists a positive constant $\Delta_0$ such that for each $\epsilon>0$ and each $\delta \in (0,\Delta_0)$
+\begin{align}
+\lim_{|Y_0-\bar{Y}_0|\rightarrow 0}\sup_{t\in[t_0,T]} P\left(|Y_{n_t}-\bar{Y}_{n_t}|\geq \epsilon\right) =0
+\end{align}
+\textbf{Proposition}: If an SDE fulfils the Lipschitz condition and its initial value $X_0$ is $\mathscr{F}_0$-measurable with $\E[X_0^2]<\infty$, the Euler approximation is numerical stable.\\ \\
+\textbf{Proof}:\\
+We will start by making putting an upper bound on $\left|Y_{n+1}-\bar{Y}_{n+1}\right|$
+\begin{align}
+\left|Y_{n+1}-\bar{Y}_{n+1}\right| = \left|Y_n-\bar{Y}_{n}+[a(Y_n)-a(\bar{Y}_n)](\tau_{n+1}-\tau_n) +[b(Y_n)-b(\bar{Y}_n)](W_{n+1}-W_n)\right|
+\end{align}
+We will bound this from above, by using the triangular inequality and the fact that $\tau_{n+1}-\tau_n\leq \delta$
+\begin{align}
+\left|Y_{n+1}-\bar{Y}_{n+1}\right| \leq  \left|Y_n-\bar{Y}_{n}\right|+\delta\left|a(Y_n)-a(\bar{Y}_n)\right| +\left|\Delta W_{n+1}\right|\left|b(Y_n)-b(\bar{Y}_n)\right|
+\end{align}
+with $\Delta W_{n+1}:=(W_{n+1}-W_n)$. With the Lipschitz condition of \cref{eq:Lip_cond} we know that surely \mbox{$\left|a(Y_n)-a(\bar{Y}_n)\right|\leq K \left|Y_n-\bar{Y}_{n}\right|$} and \mbox{$\left|b(Y_n)-b(\bar{Y}_n)\right|\leq K \left|Y_n-\bar{Y}_{n}\right|$} and thus
+\begin{align}
+\left|Y_{n+1}-\bar{Y}_{n+1}\right|\leq \left|Y_n-\bar{Y}_{n}\right|(1+\delta K+|\Delta W_{n+1}|K)
+\end{align}
