@@ -1,4 +1,3 @@
-
 In the following we will always consider an SDE of the form
 \begin{align}
 \dd X_t = a(X_t)\dd t + b(X_t) \dd W_t, \quad t\in[0,T]
@@ -18,7 +17,7 @@ Numerical stability: Let $Y$ be a discrete time approximation with $Y_0$ at time
 \end{align}
 \textbf{Proposition}: If an SDE fulfils the Lipschitz condition and its initial value $X_0$ is $\mathscr{F}_0$-measurable with $\E[X_0^2]<\infty$, the Euler approximation is numerical stable.\\ \\
 \textbf{Proof}:\\
-We will start by making putting an upper bound on $\left|Y_{n+1}-\bar{Y}_{n+1}\right|$
+We will start by putting an upper bound on $\left|Y_{n+1}-\bar{Y}_{n+1}\right|$
 \begin{align}
 \left|Y_{n+1}-\bar{Y}_{n+1}\right| = \left|Y_n-\bar{Y}_{n}+[a(Y_n)-a(\bar{Y}_n)](\tau_{n+1}-\tau_n) +[b(Y_n)-b(\bar{Y}_n)](W_{n+1}-W_n)\right|
 \end{align}
@@ -30,3 +29,62 @@ with $\Delta W_{n+1}:=(W_{n+1}-W_n)$. With the Lipschitz condition of \cref{eq:L
 \begin{align}
 \left|Y_{n+1}-\bar{Y}_{n+1}\right|\leq \left|Y_n-\bar{Y}_{n}\right|(1+\delta K+|\Delta W_{n+1}|K)
 \end{align}
+We can use this result recursively to obtain
+\begin{align}
+\left|Y_{n+1}-\bar{Y}_{n+1}\right|\leq \left|Y_0-\bar{Y}_{0}\right|\prod_{i=1}^{n+1}\underbrace{(1+\delta K+|\Delta W_{i}|K)}_{:=Z_i}
+\end{align}
+Where we defined the new sequence of random variables $Z_i :=(1+\delta K+|\Delta W_{i}|K) $. If one random variable is always equal or greater than the other, then its probability to being greater than $\epsilon$ is surely equally or greater as well, and thus we can write
+\begin{align}
+P(\left|Y_{n}-\bar{Y}_{n}\right|\geq \epsilon)&\leq P\left(\left|Y_0-\bar{Y}_0\right|\prod_{i=1}^n Z_i \geq \epsilon\right)\\
+& = P\left(\prod_{i=1}^n Z_i \geq \epsilon/\left|Y_0-\bar{Y}_0\right|\right)\\
+& = 1 - P\left(\prod_{i=1}^n Z_i \leq \epsilon/\left|Y_0-\bar{Y}_0\right|\right)\label{eq:a_gegen_wahrsch}
+\end{align}
+Since the the Wiener increments are independent, we know, that the $Z_i$ are independent and thus can write
+\begin{align}
+P\left(\prod_{i=1}^n Z_i \leq \epsilon/\left|Y_0-\bar{Y}_0\right|\right) = P_1(A_1)\manmult P_n(A_n), \\
+A_i = \{z_i\in\R:z_1\manmult z_n \geq \epsilon/\left|Y_0-\bar{Y}_0\right|\}\, \forall i \in \{1,...,n\}
+\end{align}
+We can make another approximation by reducing the sets $A_i$ such that all random variables $z_i\leq (\epsilon/\left|Y_0-\bar{Y}_0\right|)^{1/n}$, so
+\begin{align}
+P\left(\prod_{i=1}^n Z_i \leq \epsilon/\left|Y_0-\bar{Y}_0\right|\right)  \geq \prod_{i=1}^n P_i\left(Z_i\leq \sqrt[n]{ \epsilon/\left|Y_0-\bar{Y}_0\right|}\right)
+\end{align}
+Putting this into \cref{eq:a_gegen_wahrsch} gives
+\begin{align}
+P(\left|Y_{n}-\bar{Y}_{n}\right|\geq \epsilon)&\leq 1 - \prod_{i=1}^n P_i\left(Z_i\leq \sqrt[n]{ \epsilon/\left|Y_0-\bar{Y}_0\right|}\right) \label{eq:a_absch_gegen_wahrsch}
+\end{align}
+The probability density of a Wiener increment is given by $\Delta_{\tau_n} - \Delta_\tau \sim  \mathcal{N}(0,\tau_{n+1}-\tau_n)$. From this we can conclude that the probability density of the $Z_i$ is given by 
+\begin{align}
+Z_i \sim \begin{cases} 
+      0 & Z_i< 1+\delta K \\
+      2 \mathcal{N}(1+\delta K,\sqrt{K} \delta_i) &  Z_i\geq 1+\delta K
+   \end{cases}
+\end{align}
+with $\delta_i = \tau_{i+1}-\tau_i$. So we can write
+\begin{align}
+P_i\left(Z_i\leq \sqrt[n]{ \epsilon/\left|Y_0-\bar{Y}_0\right|}\right) =
+ \begin{cases} 
+      0 & a< 1+\delta K \\
+      \int_{1+\delta K}^{a} 2 \mathcal{N}(1+\delta K,\sqrt{K} \delta_i) \dd z_i & a\geq 1+\delta K
+   \end{cases}
+\end{align}
+with $a=\sqrt[n]{\epsilon/\left|Y_0-\bar{Y}_0\right| }$.
+Since $0\geq P(Z_i>\tilde{\epsilon})\leq 1$ for any $\tilde{\epsilon}$, we know together with \cref{eq:a_absch_gegen_wahrsch}, that the supremum is bounded by
+\begin{align}
+1 - \prod_{i=1}^N P_i\left(Z_i\leq \sqrt[N]{ \epsilon/\left|Y_0-\bar{Y}_0\right|}\right) &= \sup_{t\in[t_0,T]}  1 - \prod_{i=1}^{n_t} P_i\left(Z_i\leq \sqrt[n_t]{ \epsilon/\left|Y_0-\bar{Y}_0\right|}\right) \\ &\geq\sup_{t\in[t_0,T]} P\left(|Y_{n_t}-\bar{Y}_{n_t}|\geq \epsilon\right)
+\end{align}
+If we now consider the limit $\lim_{\left|Y_0-\bar{Y}_0\right| \rightarrow 0}$, which is equivalent to $\lim_{a\rightarrow \infty}$ for finite $\epsilon$, we can deduce that
+\begin{align}
+\lim_{a\rightarrow \infty} P_i(Z_i\leq a) &= \lim_{a\rightarrow \infty} \int_{1+\delta K}^{a} 2\mathcal{N}(1+\delta K,\sqrt{K}\delta_i)\dd z_i \\
+&= \int_{1+\delta K}^{\infty} 2\mathcal{N}(1+\delta K,\sqrt{K}\delta_i)\dd z_i =1\label{eq:a_int_is_1}
+\end{align}
+So we can finally write with the uniqueness of limits
+\begin{align}
+\lim_{\left|Y_0-\bar{Y}_0\right| \rightarrow 0} \sup_{t\in[t_0,T]} P\left(|Y_{n_t}-\bar{Y}_{n_t}|\geq \epsilon\right) &\leq \lim_{a\rightarrow \infty} 1 -  \prod_{i=1}^N P_i\left(Z_i\leq \sqrt[N]{ \epsilon/\left|Y_0-\bar{Y}_0\right|}\right)\\
+&=1 -  \prod_{i=1}^N \underbrace{\lim_{a\rightarrow \infty} P_i\left(Z_i\leq \sqrt[N]{ \epsilon/\left|Y_0-\bar{Y}_0\right|}\right)}_{=1,\,\text{\cref{{eq:a_int_is_1}}}} = 0
+\end{align}
+Where we were allowed to interchange the product and limit since the factors have each a finite limit.
+And since probabilities can not be negative we arrive at
+\begin{align}
+\lim_{\left|Y_0-\bar{Y}_0\right| \rightarrow 0} \sup_{t\in[t_0,T]} P\left(|Y_{n_t}-\bar{Y}_{n_t}|\geq \epsilon\right) = 0,
+\end{align}
+which concludes the poof.
