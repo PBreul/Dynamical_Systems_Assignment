@@ -1,1 +1,48 @@
-Blabla
+Asymptotically numerical stability: Using the same notation as in a), a scheme is aszmptotically stable if it is numerically stable and there exists a postive constant $\Delta_a$ such that for each $\epsilon>0$ and each $\delta\in(0,\Delta_a)$
+\begin{align}
+\lim_{|Y_0-\bar{Y}_0|\rightarrow 0}\lim_{T\rightarrow \infty} P\left(\sup_{t\in[t_0,T]}|Y_{n_t}-\bar{Y}_{n_t}|\geq \epsilon\right) =0 \label{eq:b_as_stab_cond}
+\end{align}
+\textbf{Proposition:} \\
+The Euler method is asymptotically stable for the following SDE
+\begin{align}
+\dd X_t = -5 X_t \dd t +\dd W_t \label{eq:b_SDE}
+\end{align}
+\textbf{Proof:}\\
+The SDE fulfils the Lipschitz condition, since $a(X_t) = -5X_t$ and $b(X_t)=1$ and thus
+\begin{align}
+|a(x)-a(y)|+|b(x)-b(y)| = |5y-5x| = 5 |x-y|\leq K |x-y|, \quad \forall K \in \R_{\geq 5}
+\end{align}
+When we additionally assume that $\E[X_0^2]<\infty$, we know from question a) that the Euler approximation is numerically stable.\\ 
+We will now proceed to proving the condition given in \cref{eq:b_SDE}. We will choose independent of $\epsilon$, $\delta \in (0,1/5)$.
+Together with the Euler approximation of \cref{eq:Euler_approx}, we calculate
+\begin{align}
+|Y_{n+1}-\bar{Y}_{n+1}| &= |Y_n-\bar{Y}_n-5(Y_n-\bar{Y}_n)(\tau_{n+1}-\tau_n)|\\
+&\leq |1-5(\tau_{n+1}-\tau_n)||Y_n-\bar{Y}_n|\\
+&\leq |Y_n-\bar{Y}_n|,
+\end{align}
+where the last inequality holds, since $\tau_{n+1}-\tau_n$ has to be in $(0,1/5)$. And thus we can recursively conclude, that for all time steps
+\begin{align}
+|Y_n-\bar{Y}_n|\leq |Y_0-\bar{Y}_0|.
+\end{align}
+Thus the supremum of $|Y_n-\bar{Y}_n|$  over all time steps is given by $|Y_0-\bar{Y}_0|$ and thus
+\begin{align}
+ P\left(\sup_{t\in[t_0,T]}|Y_{n_t}-\bar{Y}_{n_t}|\geq \epsilon\right)  =  P\left(|Y_{0}-\bar{Y}_{0}|\geq \epsilon\right)
+ = \begin{cases} 
+      0 &  |Y_{0}-\bar{Y}_{0}| < \epsilon\\
+     1& |Y_{0}-\bar{Y}_{0}|\geq \epsilon
+   \end{cases}
+\end{align}
+And thus we can conclude 
+\begin{align}
+\lim_{|Y_0-\bar{Y}_0|\rightarrow 0}\lim_{T\rightarrow \infty} P\left(|Y_{0}-\bar{Y}_{0}|\geq \epsilon\right) &= \lim_{|Y_0-\bar{Y}_0|\rightarrow 0} P\left(|Y_{0}-\bar{Y}_{0}|\geq \epsilon\right)\\
+&= \lim_{|Y_0-\bar{Y}_0|\rightarrow 0} 
+ \begin{cases} 
+      0 &  |Y_{0}-\bar{Y}_{0}| < \epsilon\\
+     1& |Y_{0}-\bar{Y}_{0}|\geq \epsilon
+   \end{cases}\\
+   & = 0
+\end{align}
+Where the first equality holds, since we have no dependents  on $T$. So we can conclude 
+\begin{align}
+\lim_{|Y_0-\bar{Y}_0|\rightarrow 0}\lim_{T\rightarrow \infty}  P\left(\sup_{t\in[t_0,T]}|Y_{n_t}-\bar{Y}_{n_t}|\geq \epsilon\right)  = 0.
+\end{align}
