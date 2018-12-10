@@ -13,14 +13,14 @@ The SDE fulfils the Lipschitz condition, since $a(X_t) = -5X_t$ and $b(X_t)=1$ a
 |a(x)-a(y)|+|b(x)-b(y)| = |5y-5x| = 5 |x-y|\leq K |x-y|, \quad \forall K \in \R_{\geq 5}
 \end{align}
 When we additionally assume that $\E[X_0^2]<\infty$, we know from question a) that the Euler approximation is numerically stable.\\ 
-We will now proceed to proving the condition given in \cref{eq:b_SDE}. We will choose independent of $\epsilon$, $\delta \in (0,1/5)$.
+We will now proceed to proving the condition given in \cref{eq:b_SDE}. We will choose independent of $\epsilon$, $\delta \in (0,2/5)$.
 Together with the Euler approximation of \cref{eq:Euler_approx}, we calculate
 \begin{align}
 |Y_{n+1}-\bar{Y}_{n+1}| &= |Y_n-\bar{Y}_n-5(Y_n-\bar{Y}_n)(\tau_{n+1}-\tau_n)|\\
 &\leq |1-5(\tau_{n+1}-\tau_n)||Y_n-\bar{Y}_n|\\
 &\leq |Y_n-\bar{Y}_n|,
 \end{align}
-where the last inequality holds, since $\tau_{n+1}-\tau_n$ has to be in $(0,1/5)$. And thus we can recursively conclude, that for all time steps
+where the last inequality holds, since $\tau_{n+1}-\tau_n$ has to be in $(0,2/5)$. And thus we can recursively conclude, that for all time steps
 \begin{align}
 |Y_n-\bar{Y}_n|\leq |Y_0-\bar{Y}_0|.
 \end{align}
